@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MoMoney: swap, save and connect during pregnancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff0f5;--ink:#5c1a3d;--mute:#8a5870;--card:#fff;--line:#f4d3e0;--butter:#ff9ec0;--peach:#ffd1e1;--sky:#ecd6ff;--sage:#ffe0ea}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3{font-family:'Young Serif',Georgia,serif;font-weight:400;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,3.4rem)}h2{font-size:1.7rem;margin-bottom:.4rem}h3{font-size:1.15rem}
+a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+header{background:var(--ink);color:#fff;position:sticky;top:0;z-index:5}
+.bar{max-width:1000px;margin:auto;display:flex;align-items:center;gap:1rem;padding:.6rem 1rem;flex-wrap:wrap}
+.logo{font-family:'Young Serif',serif;font-size:1.4rem;background:none;border:0;color:#fff;cursor:pointer;padding:0}
+nav{display:flex;gap:.25rem;flex-wrap:wrap;margin-left:auto}
+nav button{background:none;border:0;color:#d9e8e2;padding:.45rem .8rem;border-radius:99px;cursor:pointer}
+nav button.on{background:var(--butter);color:var(--ink);font-weight:700}
+main{max-width:1000px;margin:auto;padding:1.5rem 1rem 3rem}
+section[hidden]{display:none}
+.hero{padding:1.5rem 0 1rem}
+.hero p{font-size:1.15rem;max-width:34em;color:var(--mute)}
+.paths{display:grid;gap:.75rem;margin-top:1.5rem}
+.path{display:flex;gap:1rem;align-items:center;text-align:left;width:100%;border:0;border-radius:18px 4px 18px 4px;padding:1rem 1.2rem;cursor:pointer;background:var(--card)}
+.path b{display:block;font-size:1.1rem}.path span{color:var(--mute);font-size:.95rem}
+.path i{font-style:normal;font-size:1.8rem;width:3rem;height:3rem;border-radius:50%;display:grid;place-items:center;flex:none}
+.path:hover{box-shadow:0 0 0 2px var(--ink)}
+.sub{color:var(--mute);margin:0 0 1rem;max-width:40em}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin:.8rem 0}
+.chip{border:1.5px solid var(--ink);background:none;border-radius:99px;padding:.3rem .9rem;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:end}
+label{display:grid;gap:.2rem;font-size:.9rem;font-weight:500}
+input,select,textarea{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:.55rem .7rem;min-width:0}
+textarea{min-height:80px;resize:vertical;width:100%}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:.65rem 1.1rem;font-weight:700;cursor:pointer}
+.btn.alt{background:var(--butter);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-top:1rem}
+.card{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card .top{padding:.7rem 1rem;display:flex;justify-content:space-between;font-weight:700}
+.card .body{padding:.8rem 1rem 1rem;display:grid;gap:.4rem;flex:1;align-content:start}
+.card p{margin:0;color:var(--mute);font-size:.95rem}
+.sell .top{background:var(--sage)}.rent .top{background:var(--sky)}.nanny .top{background:var(--peach)}
+.price{font-family:'Young Serif',serif;font-size:1.3rem}
+details summary{cursor:pointer;font-weight:700;margin-top:.3rem}
+.note{background:var(--butter);border-radius:10px;padding:.6rem .9rem;font-size:.9rem;margin:.8rem 0}
+.prog{background:var(--card);border-left:8px solid var(--ink);border-radius:4px 14px 14px 4px;padding:.9rem 1.1rem;margin-top:.8rem;display:flex;gap:1rem;align-items:center}
+.prog.cash{border-color:#e0457b}.prog.health{border-color:#c04fb0}.prog.leave{border-color:#9b6bd6}.prog.supplies{border-color:#ff8fa3}
+.tag{display:inline-block;background:var(--butter);border-radius:99px;padding:0 .6rem;font-size:.8rem;font-weight:700;margin-left:.4rem}
+form.box{background:var(--card);border-radius:14px;padding:1rem;margin-top:1rem;display:grid;gap:.7rem}
+.post{background:var(--card);border-radius:14px;padding:1rem;margin-top:.8rem;display:grid;gap:.4rem}
+.meta{color:var(--mute);font-size:.85rem}
+.vote{background:none;border:1.5px solid var(--line);border-radius:99px;padding:.15rem .7rem;cursor:pointer}
+.vote.on{background:var(--peach);border-color:var(--ink)}
+.cm{border-left:3px solid var(--line);padding-left:.7rem;margin:.4rem 0}
+.grp{background:var(--card);border-radius:14px;padding:1rem;margin-top:1rem}.pr{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.6rem 0;border-top:1px solid var(--line);margin-top:.6rem}.pr .price{white-space:nowrap;text-align:right}
+.pi{width:72px;height:72px;border-radius:14px;flex:none;background:var(--bg);padding:6px}.pt{display:grid;gap:.25rem}
+.ph{height:150px;display:grid;place-items:center;overflow:hidden}.ph svg{height:120px}.ph img{width:100%;height:150px;object-fit:cover}
+.sell .ph{background:#ffe9f0}.rent .ph{background:#f4e6ff}.nanny .ph{background:#ffe9e4}
+.ai-btn{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));z-index:20;background:var(--butter);color:var(--ink);border:2px solid var(--ink);border-radius:99px;padding:.8rem 1.2rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.ai-box{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:5rem;z-index:20;width:360px;max-width:calc(100vw - 2rem);height:480px;max-height:calc(100vh - 7rem);background:#fff;border:2px solid var(--ink);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.ai-box[hidden]{display:none}
+.ai-h{background:var(--ink);color:#fff;padding:.6rem .9rem;display:flex;justify-content:space-between;align-items:center}.ai-h button{background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+.ai-log{flex:1;overflow:auto;padding:.8rem;display:grid;gap:.5rem;align-content:start;background:var(--bg)}
+.ai-log .m{padding:.5rem .75rem;border-radius:12px;max-width:88%;white-space:pre-wrap;overflow-wrap:anywhere}.m.bot{background:#fff;border:1px solid var(--line)}.m.user{background:var(--ink);color:#fff;justify-self:end}
+.ai-f{display:flex;gap:.4rem;padding:.6rem;border-top:1px solid var(--line)}.ai-f input{flex:1}
+.nbox{background:var(--bg);border-radius:10px;padding:.8rem;display:grid;gap:.6rem}.nbox[hidden]{display:none}
+.np{display:flex;gap:1.2rem;align-items:center;margin:1rem 0;flex-wrap:wrap}.nph{width:160px;height:160px;border-radius:18px;background:#ffe9e4}.nph img{height:160px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem;margin:1rem 0}.fact{background:#fff;border-radius:12px;padding:.7rem .9rem;display:grid}
+footer{text-align:center;color:var(--mute);font-size:.85rem;padding:1rem}
+@media(prefers-reduced-motion:no-preference){.card,.prog,.post{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+<button class="logo" data-go="aid">MoMoney</button>
+<nav aria-label="Main">
+<button data-t="aid" data-go="aid">Help programs</button>
+<button data-t="market" data-go="market" data-f="all">Marketplace</button>
+<button data-t="cheap" data-go="cheap">Cheap stores</button>
+<button data-t="community" data-go="community">Community</button>
+</nav></div></header>
+
+<main>
+<section id="aid" hidden>
+<h2>Find help you qualify for</h2>
+<p class="sub">Choose your state and what you need. We list programs that are commonly available. Always confirm eligibility on the official site.</p>
+<div class="row">
+<label>State<select id="st"></select></label>
+</div>
+<div class="chips" id="needs"></div>
+<div id="progs"></div>
+</section>
+
+<section id="market" hidden>
+<h2>Swap, rent and sitters</h2>
+<p class="sub">Strollers, cribs, clothes, and sitter ads from moms near you.</p>
+<div class="row">
+<div class="chips" id="mf" style="margin:0"></div>
+<label>City<input id="mc" placeholder="e.g. Austin"></label>
+<button class="btn alt" id="newL">Post a listing</button>
+</div>
+<div class="note" id="nannyNote" hidden>MoMoney does not vet sitters. Check references and meet in a public place first.</div>
+<form class="box" id="lf" hidden>
+<div class="row">
+<label>Type<select name="type"><option value="sell">Sell</option><option value="rent">Rent</option><option value="nanny">Nanny or sitter</option></select></label>
+<label>Price<input name="price" placeholder="$40 or $15/week" required></label>
+<label>City<input name="city" required></label>
+</div>
+<label>Title<input name="title" required maxlength="80"></label>
+<label>Details<textarea name="desc" maxlength="300"></textarea></label>
+<label>Photo (optional)<input type="file" name="photo" accept="image/*"></label>
+<div id="nf" class="nbox" hidden>
+<b>Sitter profile</b>
+<div class="row"><label>Years of experience<input name="exp" type="number" min="0" max="60"></label><label>Languages<input name="langs" placeholder="English, Spanish"></label></div>
+<div class="row"><label>Certifications<input name="certs" placeholder="Infant CPR, first aid"></label><label>Availability<input name="avail" placeholder="Weekday evenings"></label></div>
+<label>About you<textarea name="about" maxlength="600"></textarea></label>
+</div>
+<div class="row"><label>Your name<input name="by" class="nick" required></label>
+<label>Contact (email or phone)<input name="contact" required></label>
+<button class="btn">Publish listing</button></div>
+</form>
+<div class="grid" id="lg"></div>
+</section>
+
+<section id="nanny" hidden></section>
+
+<section id="cheap" hidden>
+<h2>Cheapest quality stores</h2>
+<p class="sub">Type your city to see the lowest prices for newborn, baby and pregnancy essentials. Prices are shared by moms and can change, so check in the store.</p>
+<div class="row">
+<label>City<input id="cc" placeholder="e.g. Austin"></label>
+<label>Product<input id="sq" placeholder="diapers, prenatal, leggings"></label>
+<button class="btn alt" id="newS">Share a price</button>
+</div>
+<div class="chips" id="sf"></div>
+<form class="box" id="sform" hidden>
+<div class="row">
+<label>Product<input name="prod" list="plist" required maxlength="60" placeholder="Newborn diapers (size 1)"></label>
+<label>Store<input name="store" required maxlength="60"></label>
+<label>City<input name="city" required placeholder="Austin, TX"></label>
+</div>
+<div class="row">
+<label>Category<select name="cat"><option value="diapers">Newborn diapers and wipes</option><option value="food">Infant formula and feeding</option><option value="clothes">Newborn clothes</option><option value="gear">Strollers, cribs, car seats</option><option value="maternity">Maternity clothes</option><option value="prenatal">Prenatal vitamins</option></select></label>
+<label>Price in dollars<input name="price" type="number" min="0" step="0.01" required></label>
+<label>Per<select name="unit"><option value="each">each</option><option>diaper</option><option>piece</option><option>pack</option><option>can</option><option>bottle</option></select></label>
+<label>Quality<select name="q"><option>Great</option><option>Good</option><option>OK</option></select></label>
+</div>
+<div class="row"><label>Your name<input name="by" class="nick" required></label><button class="btn">Share price</button></div>
+<datalist id="plist"></datalist>
+</form>
+<div id="sg"></div>
+</section>
+
+<section id="community" hidden>
+<h2>Mom community</h2>
+<p class="sub">A kind, judgment-free place. Be respectful, no medical advice replaces your doctor.</p>
+<div class="row"><div class="chips" id="cf" style="margin:0"></div><button class="btn alt" id="newP">Write a post</button></div>
+<form class="box" id="pf" hidden>
+<div class="row"><label>Topic<select name="cat"><option value="support">Support</option><option value="qa">Question</option></select></label>
+<label>Nickname<input name="by" class="nick" required></label></div>
+<label>Title<input name="title" required maxlength="100"></label>
+<label>Message<textarea name="text" required maxlength="600"></textarea></label>
+<div><button class="btn">Post</button></div>
+</form>
+<div id="pl"></div>
+</section>
+</main>
+<button id="aiBtn" class="ai-btn" aria-expanded="false" aria-controls="aiBox">Ask AI</button>
+<div id="aiBox" class="ai-box" hidden role="dialog" aria-label="MoMoney assistant">
+<div class="ai-h"><b>MoMoney assistant</b><button id="aiX" aria-label="Close assistant">&times;</button></div>
+<div id="aiLog" class="ai-log" aria-live="polite"></div>
+<form id="aiF" class="ai-f"><input id="aiI" placeholder="Ask me anything" autocomplete="off" required aria-label="Your question"><button class="btn">Send</button></form>
+</div>
+<footer>MoMoney hackathon prototype. Sample listings, posts and prices are demo data. Prices are shared by moms and can change.</footer>
+
+<script>
+/* Storage layer: swap these two functions for Supabase/Firebase calls to share data between users. */
+const DB={get(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC={
+coin:'<circle cx="32" cy="32" r="17" fill="#ffd966"/><path d="M32 22v20M37 27c-1-2-3-3-5-3-3 0-5 1.5-5 3.5s2 3 5 3.5 5 1.5 5 3.5-2 3.5-5 3.5c-2 0-4-1-5-3"/>',
+heart:'<path d="M32 47S15 37 15 25a9 9 0 0 1 17-4 9 9 0 0 1 17 4c0 12-17 22-17 22z" fill="#e0457b"/><path d="M32 26v11M26.5 31.5h11" stroke="#fff"/>',
+calendar:'<rect x="13" y="17" width="38" height="34" rx="5" fill="#fff"/><path d="M13 28h38M23 12v10M41 12v10"/><circle cx="32" cy="39" r="5" fill="#ffd966"/>',
+house:'<path d="M12 32L32 14l20 18"/><rect x="18" y="31" width="28" height="21" fill="#fff"/><path d="M34 35l-5 8h6l-4 7" stroke="#e8a317"/>',
+diaper:'<path d="M11 21h42v9c0 13-9 21-21 21S11 43 11 30z" fill="#fff"/><path d="M26 39c4 3 8 3 12 0"/><circle cx="20" cy="27" r="2" fill="#5c1a3d"/><circle cx="44" cy="27" r="2" fill="#5c1a3d"/>',
+phone:'<rect x="21" y="11" width="22" height="42" rx="5" fill="#fff"/><path d="M28 17h8"/><text x="32" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#5c1a3d" stroke="none" font-family="sans-serif">211</text>',
+stroller:'<path d="M16 34a16 16 0 0 1 16-16v16z" fill="#e0457b"/><path d="M16 34h34c0 9-7 14-15 14h-5c-8 0-14-5-14-14z" fill="#fff"/><path d="M50 34l4-14h-7"/><circle cx="24" cy="53" r="4.5" fill="#5c1a3d"/><circle cx="45" cy="53" r="4.5" fill="#5c1a3d"/>',
+clothes:'<path d="M22 12l-11 9 7 8 5-4v27h18V25l5 4 7-8-11-9c-2 4-6 6-10 6s-8-2-10-6z" fill="#f3d4ff"/>',
+bassinet:'<path d="M9 31h46c0 10-9 16-23 16S9 41 9 31z" fill="#fff"/><path d="M14 31c0-10 8-17 18-17s18 7 18 17" fill="#f3d4ff"/><path d="M18 45l-5 10M46 45l5 10"/>',
+crib:'<rect x="11" y="19" width="42" height="27" rx="3" fill="#fff"/><path d="M19 19v27M27 19v27M35 19v27M43 19v27M14 46v9M50 46v9"/>',
+swing:'<path d="M19 12l8 19M45 12l-8 19M17 12h30"/><path d="M19 31h26l-3 15H22z" fill="#ffd966"/>',
+carrier:'<circle cx="32" cy="16" r="7" fill="#ffd9cf"/><rect x="20" y="25" width="24" height="27" rx="9" fill="#e0457b"/><path d="M24 25l-6 9M40 25l6 9"/>',
+gift:'<rect x="13" y="26" width="38" height="26" rx="3" fill="#ffd966"/><path d="M11 26h42v-7H11zM32 19v33"/><path d="M32 19c-3-8-11-7-9-2 1 3 6 2 9 2zM32 19c3-8 11-7 9-2-1 3-6 2-9 2z" fill="#fff"/>',
+nanny:'<circle cx="26" cy="22" r="9" fill="#ffd9cf"/><path d="M16 21c0-8 5-12 11-12s10 4 10 10c-5-1-9-4-11-7-2 4-5 7-10 9z" fill="#5b3a2e"/><path d="M9 56c0-13 7-19 17-19s17 6 17 19z" fill="#ffd6e0"/><circle cx="47" cy="41" r="6.5" fill="#ffd9cf"/><path d="M39 57c0-6 3-9 8-9s8 3 8 9z" fill="#ffd966"/>'};
+const svg=k=>`<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#5c1a3d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${IC[k]||IC.gift}</g></svg>`;
+const iconFor=l=>l.type==='nanny'?'nanny':(['stroller','clothes|bodysuit|onesie','bassinet','crib','swing','carrier'].map(r=>[r,r.split('|')[0]]).find(([r])=>new RegExp(r,'i').test(l.title))||[0,'gift'])[1];
+const readImg=f=>new Promise(r=>{if(!f||!f.size)return r('');const fr=new FileReader();fr.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,500/i.width),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.7))};i.onerror=()=>r('');i.src=fr.result};fr.onerror=()=>r('');fr.readAsDataURL(f)});
+const STATES='AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ');
+const PROG=[
+{n:'Medicaid for pregnancy',t:'health',i:'heart',d:'Free or low-cost prenatal care, delivery and postpartum coverage. Income limits for pregnancy are higher in most states.',u:'https://www.medicaid.gov/medicaid/eligibility/index.html'},
+{n:'CHIP and Insure Kids Now',t:'health',i:'heart',d:'Health coverage for kids, and in some states for pregnant women, when income is too high for Medicaid.',u:'https://www.insurekidsnow.gov'},
+{n:'Cash assistance (TANF)',t:'cash',i:'coin',d:'Monthly cash help for families with children and low income. Apply through your state agency, rules and amounts differ by state.',u:'https://www.acf.hhs.gov/ofa/programs/tanf'},
+{n:'Earned Income Tax Credit',t:'cash',i:'coin',d:'A tax credit for working people with low to moderate income that can increase your refund. Families with children can get a bigger credit.',u:'https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc'},
+{n:'Child Tax Credit',t:'cash',i:'coin',d:'A tax credit for each qualifying child. After your baby is born you can claim it when you file taxes.',u:'https://www.irs.gov/credits-deductions/individuals/child-tax-credit'},
+{n:'State paid family leave',t:'leave',i:'calendar',d:'Partial pay while you bond with your baby. Only some states offer it.',u:'https://www.dol.gov/agencies/wb/state-paid-leave',s:['CA','CO','CT','DE','DC','MD','MA','MN','NJ','NY','OR','RI','WA']},
+{n:'Energy bill help (LIHEAP)',t:'supplies',i:'house',d:'Help paying heating and cooling bills for households with low income. Apply through your state or local agency.',u:'https://www.acf.hhs.gov/ocs/programs/liheap'},
+{n:'Diaper banks',t:'supplies',i:'diaper',d:'Free diapers and wipes from local diaper banks, which saves real money every month. Find one near you.',u:'https://nationaldiaperbanknetwork.org'},
+{n:'Call 211',t:'supplies',i:'phone',d:'A free helpline that connects you with local help for housing, utilities and baby supplies.',u:'https://www.211.org'}];
+const NEEDS={cash:'Cash and tax credits',health:'Health coverage',leave:'Paid leave',supplies:'Bills and baby supplies'};
+const L0=[
+{id:1,type:'sell',title:'Graco stroller, gently used',price:'$85',city:'Austin, TX',desc:'Folds with one hand. Used for 8 months. Cup holder included.',by:'Maria',contact:'maria@example.com'},
+{id:2,type:'sell',title:'Newborn to 3 months clothes, 30 pieces',price:'$25',city:'Brooklyn, NY',desc:'Washed, no stains. Mostly neutral colors.',by:'Aisha',contact:'555-0132'},
+{id:3,type:'rent',title:'Bassinet for the first months',price:'$15/week',city:'Chicago, IL',desc:'Rent while you need it, then pass it on. Pickup only.',by:'Emily',contact:'emily@example.com'},
+{id:4,type:'nanny',title:'Newborn nanny, CPR certified',price:'$24/hour',city:'Austin, TX',desc:'Experienced with infants. Weekday evenings and weekends.',by:'Dana',contact:'555-0177',exp:'6',langs:'English, Spanish',certs:'Infant CPR and first aid',avail:'Weekday evenings and weekends',about:'I have cared for newborns and toddlers for six years, including overnight newborn care. I follow the parents routine for feeding and sleep, keep a simple daily log, and am comfortable with twins. Two families can be contacted as references.'},
+{id:5,type:'sell',title:'Crib with mattress',price:'$60',city:'Phoenix, AZ',desc:'Converts to toddler bed. Smoke-free home.',by:'Kelly',contact:'kelly@example.com'},
+{id:6,type:'rent',title:'Baby swing',price:'$10/week',city:'Atlanta, GA',desc:'Battery powered, two speeds. Great for the fussy weeks.',by:'Tanya',contact:'555-0150'},
+{id:7,type:'nanny',title:'Weekend babysitter',price:'$20/hour',city:'Denver, CO',desc:'Nursing student, available Saturdays.',by:'Priya',contact:'priya@example.com',exp:'2',langs:'English, Hindi',certs:'First aid course',avail:'Saturdays',about:'I am a nursing student and have babysat for my cousins and neighbors since high school. I enjoy reading, outdoor walks and keeping a calm bedtime routine. Happy to meet the family first before the first booking.'},
+{id:8,type:'sell',title:'Ergonomic baby carrier',price:'$30',city:'Seattle, WA',desc:'Adjustable for newborns up to toddlers.',by:'Jess',contact:'jess@example.com'},
+{id:9,type:'nanny',title:'Overnight newborn care',price:'$28/hour',city:'Brooklyn, NY',desc:'Overnight help so new parents can sleep.',by:'Rosa',contact:'555-0199',exp:'8',langs:'English, Spanish',certs:'Infant CPR, newborn care course',avail:'Overnight, four nights a week',about:'I help families through the first months: night feeds, soothing, diaper changes and a gentle sleep routine. I can also support breastfeeding parents by bringing the baby to you and tidying the nursery.'}];
+const P0=[
+{id:1,cat:'support',title:'Overwhelmed by all the paperwork',text:'Insurance forms, leave forms, hospital forms. Anyone else feel like this is a full-time job? How do you keep track?',by:'NewMom_Jess',v:12,c:[{by:'Ana',t:'I use one folder in my phone for every form. It helped a lot.'}]},
+{id:3,cat:'qa',title:'How does FMLA work with a small employer?',text:'My company has about 30 people. Does that mean I get no protected leave? Where do I check?',by:'Beth_TX',v:7,c:[{by:'Ana',t:'Check the Department of Labor page in the Help section. 50 employees is the usual cutoff.'}]},
+{id:4,cat:'support',title:'Third trimester and no sleep',text:'Anything that helped you? I feel like I am running on empty.',by:'Lena',v:15,c:[]}];
+const S0=[
+{id:1,prod:'Newborn diapers (size 1)',store:'Costco',city:'Austin, TX',cat:'diapers',price:0.22,unit:'diaper',q:'Great',by:'Maria',demo:1},
+{id:2,prod:'Newborn diapers (size 1)',store:'Walmart',city:'Austin, TX',cat:'diapers',price:0.26,unit:'diaper',q:'Good',by:'Beth',demo:1},
+{id:3,prod:'Newborn diapers (size 1)',store:'Target',city:'Austin, TX',cat:'diapers',price:0.31,unit:'diaper',q:'Good',by:'Lena',demo:1},
+{id:4,prod:'Infant formula, store brand',store:'Walmart',city:'Austin, TX',cat:'food',price:19.98,unit:'can',q:'Good',by:'Rosa',demo:1},
+{id:5,prod:'Prenatal vitamins (60 count)',store:'Walgreens',city:'Austin, TX',cat:'prenatal',price:9.99,unit:'bottle',q:'Good',by:'Ana',demo:1},
+{id:6,prod:'Prenatal vitamins (60 count)',store:'CVS',city:'Austin, TX',cat:'prenatal',price:11.49,unit:'bottle',q:'Good',by:'Jess',demo:1},
+{id:7,prod:'Newborn diapers (size 1)',store:'Aldi',city:'Chicago, IL',cat:'diapers',price:0.20,unit:'diaper',q:'Good',by:'Emily',demo:1},
+{id:8,prod:'Newborn diapers (size 1)',store:'Target',city:'Chicago, IL',cat:'diapers',price:0.30,unit:'diaper',q:'Good',by:'Tanya',demo:1},
+{id:9,prod:'Newborn bodysuits',store:'Goodwill',city:'Chicago, IL',cat:'clothes',price:1.5,unit:'piece',q:'Great',by:'Aisha',demo:1},
+{id:10,prod:'Maternity leggings',store:'Target',city:'Dallas, TX',cat:'maternity',price:14,unit:'each',q:'Good',by:'Kelly',demo:1},
+{id:11,prod:'Maternity leggings',store:'Goodwill',city:'Dallas, TX',cat:'maternity',price:5,unit:'each',q:'Good',by:'Priya',demo:1}];
+let S=DB.get('mn_s3',null)||S0,sf='all',L=DB.get('mn_l2',null)||L0,P=(DB.get('mn_p',null)||P0).filter(p=>p.cat!=='cheap'),mf='all',cf='all',openP=new Set(),voted=new Set(DB.get('mn_v',[]));
+const save=()=>{DB.set('mn_l2',L);DB.set('mn_p',P);DB.set('mn_s3',S);DB.set('mn_v',[...voted])};
+const nick=()=>DB.get('mn_nick','');
+document.querySelectorAll('.nick').forEach(i=>i.value=nick());
+
+function go(t,f){if(!document.getElementById(t))t='aid';
+document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==t);
+if(f){mf=f;drawL()}
+document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));scrollTo(0,0);history.replaceState(null,'','#'+t)}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go,g.dataset.f)});
+
+/* Chips helper */
+function chips(el,opts,cur,fn,multi){el.innerHTML=Object.entries(opts).map(([k,v])=>`<button type="button" class="chip${multi?cur.has(k):cur===k?' on':''}" data-k="${k}">${v}</button>`).join('').replace(/chiptrue/g,'chip on').replace(/chipfalse/g,'chip');
+el.onclick=e=>{const k=e.target.dataset.k;if(k)fn(k)}}
+
+/* Help programs */
+const need=new Set();
+$('#st').innerHTML='<option value="">Select your state</option>'+STATES.map(s=>`<option>${s}</option>`).join('');
+function drawA(){chips($('#needs'),NEEDS,need,k=>{need.has(k)?need.delete(k):need.add(k);drawA()},true);
+const st=$('#st').value;
+const r=PROG.filter(p=>(!need.size||need.has(p.t))&&(!p.s||!st||p.s.includes(st)));
+$('#progs').innerHTML=r.length?r.map(p=>`<div class="prog ${p.t}"><div class="pi">${svg(p.i)}</div><div class="pt"><h3>${esc(p.n)}${p.s?`<span class="tag">${st?'Available in '+st:'Only in some states'}</span>`:''}</h3><span>${esc(p.d)}</span><a href="${p.u}" target="_blank" rel="noopener"><b>Check eligibility on the official site</b></a></div></div>`).join(''):'<p class="sub">No programs match. Try removing a filter.</p>'}
+$('#st').onchange=drawA;
+
+/* Marketplace */
+const TYPES={all:'All',sell:'For sale',rent:'For rent',nanny:'Nannies and sitters'};
+const TL={sell:'For sale',rent:'For rent',nanny:'Sitter ad'};
+function drawL(){chips($('#mf'),TYPES,mf,k=>{mf=k;drawL()});
+$('#nannyNote').hidden=mf!=='nanny';
+const c=$('#mc').value.trim().toLowerCase();
+const r=L.filter(l=>(mf==='all'||l.type===mf)&&(!c||l.city.toLowerCase().includes(c)));
+$('#lg').innerHTML=r.length?r.map(l=>`<article class="card ${l.type}"><div class="top"><span>${TL[l.type]}</span><span class="price">${esc(l.price)}</span></div><div class="ph">${l.img?`<img src="${esc(l.img)}" alt="${esc(l.title)}">`:svg(iconFor(l))}</div><div class="body"><h3>${esc(l.title)}</h3><p>${esc(l.desc)}</p><p class="meta">${esc(l.city)}, posted by ${esc(l.by)}</p>${l.type==='nanny'?`<p><b>${l.exp?esc(l.exp)+' years of experience':'Sitter'}</b></p><button class="btn alt" data-n="${l.id}">View profile</button>`:''}<details><summary>Show contact</summary>${esc(l.contact)}</details></div></article>`).join(''):'<p class="sub">Nothing here yet. Be the first to post a listing.</p>'}
+$('#mc').oninput=drawL;
+$('#lg').onclick=e=>{const b=e.target.closest('[data-n]');if(b)location.hash='nanny-'+b.dataset.n};
+$('#lf').elements.type.onchange=e=>{$('#nf').hidden=e.target.value!=='nanny'};
+function showNanny(id){const l=L.find(x=>x.id==id);if(!l||l.type!=='nanny')return go('market','nanny');
+document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!=='nanny');
+document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==='market'));
+const fact=(k,v)=>v?`<div class="fact"><span class="meta">${k}</span><b>${esc(v)}</b></div>`:'';
+$('#nanny').innerHTML=`<button class="chip" data-go="market" data-f="nanny">Back to sitters</button>
+<div class="np"><div class="ph nph">${l.img?`<img src="${esc(l.img)}" alt="${esc(l.by)}">`:svg('nanny')}</div><div><h2>${esc(l.by)}</h2><p class="sub" style="margin:.2rem 0">${esc(l.title)}</p><p class="price" style="margin:0">${esc(l.price)}</p><p class="meta" style="margin:0">${esc(l.city)}</p></div></div>
+<div class="facts">${fact('Experience',l.exp?l.exp+' years':'')}${fact('Languages',l.langs)}${fact('Certifications',l.certs)}${fact('Availability',l.avail)}</div>
+<h3>About ${esc(l.by)}</h3><p style="max-width:42em">${esc(l.about||l.desc)}</p>
+<div class="note">MoMoney does not vet sitters. Ask for references, meet in a public place first and trust your instincts.</div>
+<details open><summary>Contact ${esc(l.by)}</summary>${esc(l.contact)}</details>`;scrollTo(0,0)}
+$('#newL').onclick=()=>{$('#lf').hidden=!$('#lf').hidden};
+$('#lf').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target)),file=f.photo;delete f.photo;f.img=await readImg(file);
+DB.set('mn_nick',f.by);L.unshift({id:Date.now(),...f});save();e.target.reset();e.target.by.value=f.by;e.target.hidden=true;$('#nf').hidden=true;mf='all';drawL()};
+
+/* Community */
+const CATS={all:'All',support:'Support',qa:'Questions'};
+function drawP(){chips($('#cf'),CATS,cf,k=>{cf=k;drawP()});
+const r=P.filter(p=>cf==='all'||p.cat===cf);
+$('#pl').innerHTML=r.map(p=>`<article class="post"><span class="meta">${CATS[p.cat]}, by ${esc(p.by)}</span><h3>${esc(p.title)}</h3><p style="margin:0">${esc(p.text)}</p>
+<div class="row"><button class="vote${voted.has(p.id)?' on':''}" data-v="${p.id}" aria-label="Like">&#10084; ${p.v}</button></div>
+<details data-d="${p.id}" ${openP.has(p.id)?'open':''}><summary>${p.c.length} ${p.c.length===1?'reply':'replies'}</summary>${p.c.map(c=>`<div class="cm"><span class="meta">${esc(c.by)}</span><br>${esc(c.t)}</div>`).join('')}
+<form data-r="${p.id}" class="row"><input name="by" placeholder="Nickname" class="nick" value="${esc(nick())}" required style="width:9em"><input name="t" placeholder="Write a reply" required style="flex:1"><button class="btn">Reply</button></form></details></article>`).join('')}
+$('#pl').onclick=e=>{const v=e.target.closest('[data-v]');if(!v)return;const p=P.find(x=>x.id==v.dataset.v);
+voted.has(p.id)?(voted.delete(p.id),p.v--):(voted.add(p.id),p.v++);save();drawP()};
+$('#pl').addEventListener('toggle',e=>{const id=+e.target.dataset.d;if(!id)return;e.target.open?openP.add(id):openP.delete(id)},true);
+$('#pl').onsubmit=e=>{e.preventDefault();const id=+e.target.dataset.r,p=P.find(x=>x.id===id),f=Object.fromEntries(new FormData(e.target));
+DB.set('mn_nick',f.by);p.c.push({by:f.by,t:f.t});openP.add(id);save();drawP()};
+$('#newP').onclick=()=>{$('#pf').hidden=!$('#pf').hidden};
+$('#pf').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+DB.set('mn_nick',f.by);P.unshift({id:Date.now(),v:0,c:[],...f});save();e.target.reset();e.target.by.value=f.by;e.target.hidden=true;cf='all';drawP()};
+
+/* Cheapest prices in the city */
+const SC={all:'All',diapers:'Newborn diapers and wipes',food:'Infant formula and feeding',clothes:'Newborn clothes',gear:'Strollers, cribs, car seats',maternity:'Maternity clothes',prenatal:'Prenatal vitamins'};
+const money=n=>'$'+Number(n).toFixed(2);
+function drawS(){chips($('#sf'),SC,sf,k=>{sf=k;drawS()});
+const c=$('#cc').value.trim().toLowerCase(),q=$('#sq').value.trim().toLowerCase();
+$('#plist').innerHTML=[...new Set(S.map(x=>x.prod))].map(p=>`<option value="${esc(p)}">`).join('');
+const r=S.filter(x=>(sf==='all'||x.cat===sf)&&(!c||x.city.toLowerCase().includes(c))&&(!q||(x.prod+' '+x.store+' '+SC[x.cat]).toLowerCase().includes(q)));
+const g={};r.forEach(x=>{const k=x.prod.trim().toLowerCase();(g[k]=g[k]||[]).push(x)});
+$('#sg').innerHTML=Object.values(g).sort((a,b)=>a[0].prod.localeCompare(b[0].prod)).map(a=>{a.sort((x,y)=>x.price-y.price);
+return `<div class="grp"><h3>${esc(a[0].prod)}</h3><span class="meta">${SC[a[0].cat]}</span>${a.map((x,i)=>`<div class="pr"><div><b>${esc(x.store)}</b>${i===0&&a.length>1?'<span class="tag">Lowest price</span>':''}${x.demo?'<span class="tag" style="background:var(--sky)">Sample</span>':''}<br><span class="meta">${esc(x.city)}, quality: ${esc(x.q)}, shared by ${esc(x.by)}</span><br><a class="meta" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.store+' '+x.city)}" target="_blank" rel="noopener">Open in Maps</a></div><div class="price">${money(x.price)}<span class="meta"> ${x.unit==='each'?'each':'per '+esc(x.unit)}</span></div></div>`).join('')}</div>`}).join('')||'<p class="sub">No prices for this city yet. Be the first to share one.</p>'}
+$('#cc').oninput=$('#sq').oninput=drawS;
+$('#newS').onclick=()=>{$('#sform').hidden=!$('#sform').hidden};
+$('#sform').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+DB.set('mn_nick',f.by);S.unshift({id:Date.now(),...f,price:+f.price});save();e.target.reset();e.target.by.value=f.by;e.target.hidden=true;sf='all';drawS()};
+
+/* AI assistant: talks to the serverless function in api/chat.js */
+const aiLog=$('#aiLog'),hist=[];
+function aiAdd(role,text){const d=document.createElement('div');d.className='m '+role;d.textContent=text;aiLog.appendChild(d);aiLog.scrollTop=aiLog.scrollHeight;return d}
+aiAdd('bot','Hi! I am the MoMoney assistant. Ask me anything about pregnancy, baby costs, paperwork or this site. I am not a doctor, so check medical questions with your care team.');
+$('#aiBtn').onclick=()=>{const o=$('#aiBox').hidden;$('#aiBox').hidden=!o;$('#aiBtn').setAttribute('aria-expanded',o);if(o)$('#aiI').focus()};
+$('#aiX').onclick=()=>{$('#aiBox').hidden=true;$('#aiBtn').setAttribute('aria-expanded',false)};
+$('#aiF').onsubmit=async e=>{e.preventDefault();const t=$('#aiI').value.trim();if(!t)return;$('#aiI').value='';aiAdd('user',t);hist.push({role:'user',content:t});
+const w=aiAdd('bot','Thinking...');
+try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist.slice(-12)})});
+const j=await r.json();if(!r.ok)throw new Error(j.error||'error');w.textContent=j.reply;hist.push({role:'assistant',content:j.reply})}
+catch(err){w.textContent='The assistant is not connected yet. Deploy the site with api/chat.js and set ANTHROPIC_API_KEY (see README).';hist.pop()}};
+
+drawA();drawL();drawP();drawS();function route(){const h=location.hash.slice(1);if(h.startsWith('nanny-'))showNanny(h.slice(6));else go(h||'aid')}
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
