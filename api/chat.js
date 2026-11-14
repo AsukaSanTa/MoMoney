@@ -10,11 +10,16 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 
 // Tries several Gemini models, so a busy or missing model does not break the chat.
 async function askGemini(key, msgs) {
-  const models = [process.env.GEMINI_MODEL, 'gemini-flash-latest', 'gemini-flash-lite-latest', 'gemini-3.8-flash'].filter(Boolean);
+  const models = [process.env.GEMINI_MODEL, 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-3.8-flash'].filter(Boolean);
   let lastErr = 'Gemini error', lastStatus = 0;
+  const t0 = Date.now();
   for (const model of models) {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    if (Date.now() - t0 > 20000) break; // do not keep the user waiting
+    let r;
+    try {
+    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
+      signal: AbortSignal.timeout(8000),
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM }] },
@@ -22,6 +27,7 @@ async function askGemini(key, msgs) {
         generationConfig: { maxOutputTokens: 800 }
       })
     });
+    } catch (e) { lastStatus = 503; await wait(300); continue; } // timeout: try the next model
     const j = await r.json().catch(() => ({}));
     if (r.ok) {
       const parts = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || [];
