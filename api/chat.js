@@ -1,14 +1,43 @@
 // Vercel serverless function: POST /api/chat  with { messages: [{ role, content }] }
-// Add ANTHROPIC_API_KEY in your Vercel project settings. Never put the key in index.html.
-const SYSTEM = `You are the assistant inside MoMoney, a website for pregnant women and new moms in the US. The site has: help programs you may qualify for, a marketplace to swap or rent baby gear, nanny ads, the cheapest prices for newborn and pregnancy items by city, and a mom community.
+// Free option: set GEMINI_API_KEY (get it free at https://aistudio.google.com/apikey).
+// Optional: set ANTHROPIC_API_KEY instead to use Claude. Never put keys in index.html.
+const SYSTEM = `You are the assistant inside MoMoney, a website for pregnant women and new moms in the US. The site has: help programs you may qualify for, a marketplace to swap or rent baby gear and find sitters, the cheapest prices for newborn and pregnancy items by city, and a mom community.
 Answer any question helpfully and briefly, in the language the user writes in.
 For medical, legal or money questions give general information, say you are not a doctor, lawyer or financial advisor, and suggest asking a professional for personal decisions. If someone describes an emergency, tell them to call 911.
 Do not invent prices, deadlines or program rules. If you are unsure, say so and point to the official website.`;
 
+async function askGemini(key, msgs) {
+  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM }] },
+      contents: msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
+      generationConfig: { maxOutputTokens: 800 }
+    })
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error((j.error && j.error.message) || 'Gemini error');
+  const parts = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || [];
+  return parts.map(p => p.text || '').join('\n') || 'Sorry, I could not answer that. Please try another question.';
+}
+
+async function askClaude(key, msgs) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || 'claude-haiku-5-5', max_tokens: 600, system: SYSTEM, messages: msgs })
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error((j.error && j.error.message) || 'Claude error');
+  return (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST' });
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return res.status(500).json({ error: 'Missing ANTHROPIC_API_KEY' });
+  const gKey = process.env.GEMINI_API_KEY, aKey = process.env.ANTHROPIC_API_KEY;
+  if (!gKey && !aKey) return res.status(500).json({ error: 'Missing GEMINI_API_KEY' });
 
   let msgs = (req.body && req.body.messages) || [];
   msgs = msgs
@@ -19,21 +48,9 @@ module.exports = async function handler(req, res) {
   if (!msgs.length) return res.status(400).json({ error: 'No message' });
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: process.env.ANTHROPIC_MODEL || 'claude-haiku-5-5',
-        max_tokens: 600,
-        system: SYSTEM,
-        messages: msgs
-      })
-    });
-    const j = await r.json();
-    if (!r.ok) return res.status(502).json({ error: (j.error && j.error.message) || 'Upstream error' });
-    const reply = (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+    const reply = gKey ? await askGemini(gKey, msgs) : await askClaude(aKey, msgs);
     return res.status(200).json({ reply });
   } catch (e) {
-    return res.status(500).json({ error: 'Request failed' });
+    return res.status(502).json({ error: String(e.message || 'Request failed') });
   }
 };
